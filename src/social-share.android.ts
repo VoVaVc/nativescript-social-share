@@ -69,3 +69,30 @@ export function shareUrl(url, text, subject) {
 
   share(intent, subject);
 }
+
+function shareMultiple(text, image, subject) {
+  numberOfImagesCreated++;
+  context = application.android.context;
+  var intent = getIntent("image/jpeg");
+  var stream = new java.io.ByteArrayOutputStream();
+  image.android.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, stream);
+  var imageFileName = "socialsharing" + numberOfImagesCreated + ".jpg";
+  var newFile = new java.io.File(context.getExternalFilesDir(null), imageFileName);
+  var fos = new java.io.FileOutputStream(newFile);
+  fos.write(stream.toByteArray());
+  fos.flush();
+  fos.close();
+  var shareableFileUri;
+  var sdkVersionInt = parseInt(platform.device.sdkVersion);
+  if (sdkVersionInt >= 21) {
+      shareableFileUri = FileProviderPackageName.FileProvider.getUriForFile(context, application.android.nativeApp.getPackageName() + ".fileprovider", newFile);
+  }
+  else {
+      shareableFileUri = android.net.Uri.fromFile(newFile);
+  }
+  intent.putExtra(android.content.Intent.EXTRA_STREAM, shareableFileUri);
+  intent.putExtra(android.content.Intent.EXTRA_TEXT, text);
+
+  share(intent, subject);
+}
+exports.shareMultiple = shareMultiple;
