@@ -35,3 +35,5 @@ export function shareText(text) {
 export function shareUrl(url, text) {
   share([NSURL.URLWithString(url), text]);
 }
+
+exports.shareMultiple = (text, image) => share([text, image]);
