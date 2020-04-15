@@ -1,5 +1,5 @@
 import { ios } from "tns-core-modules/utils/utils";
-import { Frame } from "tns-core-modules/ui";
+import { Frame } from "tns-core-modules/ui/frame";
 
 function share(thingsToShare) {
   const activityController = UIActivityViewController.alloc()
